@@ -12,16 +12,16 @@ class AuthController extends Controller
     public function login(Request $request){
 
         $data = $request->validate([
-            'login' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
         
-        // a login can be an email or the LOGIN string
+        // an email can be an email or the LOGIN string
 
-        if (strpos($request->login, '@')){
+        if (strpos($request->email, '@')){
             $user = User::where('email', $request->email)->first();
         }else{
-            $user = User::where('login', $request->login)->first();
+            $user = User::where('login', $request->email)->first();
         }
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
@@ -35,7 +35,6 @@ class AuthController extends Controller
         $response = [
             'user' => $user,
             'token' => $token,
-            'role' => $role
         ];
 
         return response($response, 201);
