@@ -44,6 +44,6 @@ Route::group(['middleware' => ['auth:sanctum', 'role:superadmin|rh']], function 
 
 
     
-Route::get('/collaborators','UserController@showAll')->middleware('auth:sanctum', 'role:superadmin|rh|projrctmanager');
+Route::get('/collaborators','UserController@showAll')->middleware('auth:sanctum', 'role:superadmin|rh|projectmanager');
 Route::get('/collaborator/{id}','UserController@show')->middleware('auth:sanctum');
 

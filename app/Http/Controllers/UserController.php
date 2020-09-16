@@ -11,8 +11,9 @@ use Spatie\Permission\Exceptions\UnauthorizedException;
 class UserController extends Controller
 {
     public function showALL(){
-        $collabs = User::all();
-        return response()->json(['users' => $collabs]);
+        // $collabs = User::all();
+        $collabs = User::role('collaborator')->orderBy('created_at', 'desc')->get();
+        return response()->json($collabs);
     }
 
     public function show($id){
@@ -43,10 +44,9 @@ class UserController extends Controller
         }
 
         $collab = new User();
-        $collab = User::forceCreate(request()->all());
+        $collab = User::forceCreate(request()->all())->syncRoles('collaborator');
         $collab->password = Hash::make($collab->password);
         $collab->save();
-        $collab->syncRoles('collaborator');
         return response()->json([
             'message' => 'Added !'
         ]);
